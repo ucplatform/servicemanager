@@ -49,6 +49,8 @@ function Get-ZoneFromPhoneNumbers {
 function Get-TenantData {
   [CmdletBinding()]
   param (
+    [Parameter(Mandatory = $true)]
+    [System.Collections.Generic.List[PSCustomObject]]$Countries
   )
 
   begin {
@@ -96,7 +98,7 @@ function Get-TenantData {
       }
 
       $phoneNumber = ($user.LineUri -split ":")[-1]
-      $teamZone = (Get-ZoneFromPhoneNumbers -PhoneNumbers $phoneNumber -Countries $countryData).TeamZone
+      $teamZone = (Get-ZoneFromPhoneNumbers -PhoneNumbers $phoneNumber -Countries $Countries).TeamZone
 
       $user | Add-Member NoteProperty -Name TeamZone -Value $teamZone
     }
@@ -120,8 +122,10 @@ function Get-TenantData {
   }
 }
 
-$countryData = Import-Csv -Path "C:\Temp\CountryData.csv"
+
 
 Connect-MicrosoftTeams
 
-Get-TenantData | Export-Csv -Path "C:\Temp\TenantData-Test.csv" -NoTypeInformation
+$countryData = Import-Csv -Path "C:\Temp\CountryData.csv"
+
+Get-TenantData -Countries $countryData | Export-Csv -Path "C:\Temp\TenantData-Test.csv" -NoTypeInformation
