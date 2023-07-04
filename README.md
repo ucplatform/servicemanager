@@ -1,4 +1,4 @@
-# Documentation for PowerShell Scripts
+# Documentation for ServiceManagerReport.ps1 Script
 
 This document describes the high-level usage of two PowerShell functions, `Get-ZoneFromPhoneNumbers` and `Get-TenantData`, and a usage script.
 
