@@ -123,7 +123,7 @@ function Get-TenantData {
   }
 }
 
-function Invoke-UplodTenantDataToBlobStorage {
+function Invoke-UploadTenantDataToBlobStorage {
   [CmdletBinding()]
   param (
     [Parameter(Mandatory = $true)]
@@ -164,7 +164,7 @@ function Invoke-UplodTenantDataToBlobStorage {
   }
 
   process {
-    $response = Invoke-WebRequest -Uri $url -Method Put -Headers $headers -Body $bytes -ContentType 'application/octet-stream' -ErrorAction SilentlyContinue
+    $response = Invoke-WebRequest -Uri $url -Method Put -Headers $headers -Body $bytes -ContentType "application/octet-stream" -ErrorAction SilentlyContinue
 
     if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) {
       $output.Add([PSCustomObject]@{
@@ -199,4 +199,4 @@ $countryData = Import-Csv -Path "C:\Temp\CountryData.csv"
 
 $tenantData = Get-TenantData -Countries $countryData
 
-Invoke-UplodTenantDataToBlobStorage -TenantData $tenantData -AccountName "saservicemanagerdata" -ContainerName "customerdata" -SasToken "sp=rcwl&st=2023-08-04T14:47:31Z&se=2026-06-01T22:47:31Z&spr=https&sv=2022-11-02&sr=c&sig="
+Invoke-UploadTenantDataToBlobStorage -TenantData $tenantData -AccountName "saservicemanagerdata" -ContainerName "customerdata" -SasToken "sp=rcwl&st=2023-08-04T14:47:31Z&se=2026-06-01T22:47:31Z&spr=https&sv=2022-11-02&sr=c&sig="
