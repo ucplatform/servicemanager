@@ -164,7 +164,6 @@ function Invoke-UplodTenantDataToBlobStorage {
   }
 
   process {
-    #Invoke-RestMethod -Uri $url -Method Put -Headers $headers -Body $bytes -ContentType "application/octet-stream"
     $response = Invoke-WebRequest -Uri $url -Method Put -Headers $headers -Body $bytes -ContentType 'application/octet-stream' -ErrorAction SilentlyContinue
 
     if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) {
