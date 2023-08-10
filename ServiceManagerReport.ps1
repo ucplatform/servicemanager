@@ -63,8 +63,9 @@ function Get-TenantData {
     $voiceRoutes = Get-CsOnlineVoiceRoute
     $pstnUsages = [System.Collections.Generic.List[PSCustomObject]]::new()
     $sipcomPolicies = [System.Collections.Generic.List[PSCustomObject]]::new()
-
+    $customerId = ""
     foreach ($voiceRoute in $voiceRoutes) {
+        $customerId = $voiceRoute.OnlinePstnGatewayList
       if ($voiceRoute.OnlinePstnGatewayList -like "*halo.sipcom.cloud") {
         $pstnUsages.Add($voiceRoute.OnlinePstnUsages)
       }
@@ -106,7 +107,7 @@ function Get-TenantData {
 
   end {
     $output.Add([PSCustomObject]@{
-        CustomerId          = ($verifiedDomain.Split("."))[0]
+        CustomerID          = $customerId.SubString(3,6)
         VerifiedDomin       = $verifiedDomain
         TenantActiveUsers   = $activeUsers.Count
         SipcomPlatformUsers = $activeLicensedUsersWithVoiceRoutingPolicy.Count
@@ -149,7 +150,7 @@ function Invoke-UploadTenantDataToBlobStorage {
 
   begin {
     $output = New-Object System.Collections.Generic.List[PSCustomObject]
-    $blobName = "$($TenantData.CustomerId).csv"
+    $blobName = "$($TenantData.CustomerID).csv"
 
     $csvData = $TenantData | ConvertTo-Csv -NoTypeInformation
     $csvData = $csvData -replace '"', ''
