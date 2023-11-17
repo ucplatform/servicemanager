@@ -38,7 +38,7 @@ The function returns a list of `PSCustomObject` objects with properties - Custom
 
 ## Usage Script
 
-This script imports data from the `CountryData.csv` file, uses this data with the `Get-TenantData` function, and exports the result into `TenantData-Test.csv` file.
+This script collects and uses the data with the `Get-TenantData` function, and exports the result into `TenantData-Test.csv` file.
 
 ## Running the Script
 
