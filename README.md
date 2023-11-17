@@ -47,7 +47,7 @@ Run the script using PowerShell. It will:
 1. Connect to Microsoft Teams.
 2. Enter the required SAS Token: Provided by your Partner in the email
 3. Retrieve tenant data using `Get-TenantData` function with the imported country data.
-4. Export the tenant data to `C:\Temp\TenantData-Test.csv`. **Note:** This path can be changed on Line 131, as it is a parameter.
+4. Export the tenant data to blob storage, where it is processed and added to your customer record
 
 Before running the script, ensure that you're logged into an account that has the necessary permissions to perform these tasks. If you're not logged in or don't have sufficient permissions, the script will fail.
 
