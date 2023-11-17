@@ -6,8 +6,8 @@ This document describes the high-level usage of two PowerShell functions, `Get-Z
 
 1. PowerShell version 5.1 or above.
 2. The Teams PowerShell Module. If you don't have this installed, you can install it with the command `Install-Module -Name MicrosoftTeams -Force`.
-3. `CountryData.csv` file placed at `C:\Temp\` directory. This file should contain the country dialling codes, country names, and their corresponding team zones. Make sure this path exists and is accessible. **Note:** This path can be changed on Line 129, as it is a parameter.
-4. Connection to Microsoft Teams. Make sure that you have the required permissions to access and manipulate Teams data.
+3. The az.storage PowerShell Module. If you don't have this installed, you can install it with the command `Install-Module -Name Az.Storage -Force`.
+5. Connection to Microsoft Teams. Make sure that you have the required permissions to access and manipulate Teams data.
 
 ## Function Definitions
 
@@ -45,7 +45,7 @@ This script imports data from the `CountryData.csv` file, uses this data with th
 Run the script using PowerShell. It will:
 
 1. Connect to Microsoft Teams.
-2. Import country data from `C:\Temp\CountryData.csv`.
+2. Enter the required SAS Token: Provided by your Partner in the email
 3. Retrieve tenant data using `Get-TenantData` function with the imported country data.
 4. Export the tenant data to `C:\Temp\TenantData-Test.csv`. **Note:** This path can be changed on Line 131, as it is a parameter.
 
