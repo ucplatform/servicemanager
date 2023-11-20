@@ -198,8 +198,9 @@ function Get-ZoneFromPhoneNumbers {
   
   import-module Az.Storage
 
-  $sas = Read-Host "Please Enter The SAS Token"
-
+  $token = Read-Host "Please Enter The SAS Token"
+  $sas = "?sv=2022-11-02&ss=bf&srt=co&sp=rwdlactfx&se=2023-11-23T18:41:09Z&st=2023-11-17T10:41:09Z&spr=https&sig=" + $token
+  
   #Get Storage Account context
   $context = New-AzStorageContext -StorageAccountName "saservicemanagerdata" -SasToken $sas
   #Get reference for container
