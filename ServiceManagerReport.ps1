@@ -194,12 +194,14 @@ function Get-ZoneFromPhoneNumbers {
     }
   }
 
-    $teamsmodule = Get-Module -Name microsoftTeams
-    if ($null -eq $teamsmodule) {throw "No Teams module - Please run the following command to install it:  "}
+#Check for required modules
+$teamsmodule = Get-Module -Name microsoftTeams
+if ($null -eq $teamsmodule) {throw "No Teams module - Please run the following command to install it: Install-Module -Name MicrosoftTeams -Force "}
 
-    $azmodule = Get-Module -Name Az.Storage
-    if ($null -eq $azmodule) {throw "No Az.Storage module - Please run the following command to install it:  "}
-  
+$azmodule = Get-Module -Name Az.Storage
+if ($null -eq $azmodule) {throw "No Az.Storage module - Please run the following command to install it: Install-Module -Name Az.Storage -Force  "}
+
+ #Start execution 
   Connect-MicrosoftTeams
   
   import-module Az.Storage
