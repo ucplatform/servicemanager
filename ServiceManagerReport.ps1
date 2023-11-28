@@ -207,7 +207,7 @@ if ($null -eq $azmodule) {throw "No Az.Storage module - Please run the following
   import-module Az.Storage
 
   $token = Read-Host "Please Enter The SAS Token"
-  $sas = "?sv=2022-11-02&ss=bf&srt=co&sp=rwdlactfx&se=2023-11-23T18:41:09Z&st=2023-11-17T10:41:09Z&spr=https&sig=" + $token
+  $sas = "?sv=2022-11-02&ss=bf&srt=co&sp=rwdlaciytfx&se=2025-05-01T00:23:50Z&st=2023-11-28T17:23:50Z&spr=https&sig=" + $token
   
   #Get Storage Account context
   $context = New-AzStorageContext -StorageAccountName "saservicemanagerdata" -SasToken $sas
