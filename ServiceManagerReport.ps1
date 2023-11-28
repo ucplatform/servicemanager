@@ -195,16 +195,14 @@ function Get-ZoneFromPhoneNumbers {
   }
 
 #Check for required modules
-$teamsmodule = Get-Module -Name microsoftTeams
+$teamsmodule = import-module microsoftTeams
 if ($null -eq $teamsmodule) {throw "No Teams module - Please run the following command to install it: Install-Module -Name MicrosoftTeams -Force "}
 
-$azmodule = Get-Module -Name Az.Storage
+$azmodule = import-module Az.Storage
 if ($null -eq $azmodule) {throw "No Az.Storage module - Please run the following command to install it: Install-Module -Name Az.Storage -Force  "}
 
  #Start execution 
   Connect-MicrosoftTeams
-  
-  import-module Az.Storage
 
   $token = Read-Host "Please Enter The SAS Token"
   $sas = "?sv=2022-11-02&ss=bf&srt=co&sp=rwdlaciytfx&se=2025-05-01T00:23:50Z&st=2023-11-28T17:23:50Z&spr=https&sig=" + $token
