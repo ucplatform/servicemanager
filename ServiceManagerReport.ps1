@@ -192,7 +192,7 @@ function Get-ZoneFromPhoneNumbers {
   }
 
 #Check for required modules
-$teamsmodule = import-module microsoftTeams
+$teamsmodule = import-module MicrosoftTeams
 if ($null -eq $teamsmodule) {throw "No Teams module - Please run the following command to install it: Install-Module -Name MicrosoftTeams -Force "}
 
 $azmodule = import-module Az.Storage
