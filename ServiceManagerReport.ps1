@@ -141,7 +141,7 @@ function Get-ZoneFromPhoneNumbers {
   
       [Parameter(Mandatory = $true)]
       [ValidateScript({ -not ([string]::IsNullOrWhiteSpace($_)) })]
-      [string]$SasToken,
+      [string]$SasToken
       
     )
   
