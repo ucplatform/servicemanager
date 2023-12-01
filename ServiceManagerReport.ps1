@@ -205,7 +205,7 @@ import-module Az.Storage
   #Get reference for container
   $container = Get-AzStorageContainer -Name "customerdata" -Context $context
   #Get reference for file
-  $client = $container.CloudBlobContainer.GetBlockBlobReference("CountryData2.Json")
+  $client = $container.CloudBlobContainer.GetBlockBlobReference("CountryData.json")
   #Read file contents into memory
   $file = $client.DownloadText()
   
