@@ -112,12 +112,12 @@ function Get-ZoneFromPhoneNumbers {
           TenantActiveUsers   = $activeUsers.Count
           SipcomPlatformUsers = $activeLicensedUsersWithVoiceRoutingPolicy.Count
           TenantCallQueues    = $callQueueData.Length
-          ZoneOne             = ($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 1 }).Count
-          ZoneTwo             = ($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 2 }).Count
-          ZoneThree           = ($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 3 }).Count
-          ZoneFour            = ($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 4 }).Count
-          ZoneFive            = ($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 5 }).Count
-          ZoneSix             = ($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 6 }).Count
+          ZoneOne             = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 1 }).Count
+          ZoneTwo             = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 2 }).Count
+          ZoneThree           = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 3 }).Count
+          ZoneFour            = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 4 }).Count
+          ZoneFive            = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 5 }).Count
+          ZoneSix             = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 6 }).Count
         })
   
       return $output
