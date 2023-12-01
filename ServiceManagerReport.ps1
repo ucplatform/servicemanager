@@ -65,7 +65,13 @@ function Get-ZoneFromPhoneNumbers {
       $sipcomPolicies = [System.Collections.Generic.List[PSCustomObject]]::new()
       $customerId = ""
       foreach ($voiceRoute in $voiceRoutes) {
-          $customerId = $voiceRoute.OnlinePstnGatewayList
+          [string]$customerId = $voiceRoute.OnlinePstnGatewayList
+          if ($customerId -match "7dk"){
+          $customerId = $customerId.Substring($customerId.IndexOf("7dk"),6)
+          }
+           if ($customerId -match "7dj"){
+          $customerId = $customerId.Substring($customerId.IndexOf("7dj"),6)
+          }
         if ($voiceRoute.OnlinePstnGatewayList -like "*halo.sipcom.cloud") {
           $pstnUsages.Add($voiceRoute.OnlinePstnUsages)
         }
@@ -107,7 +113,7 @@ function Get-ZoneFromPhoneNumbers {
   
     end {
       $output.Add([PSCustomObject]@{
-          CustomerID          = $customerId.SubString(3,6)
+          CustomerID          = $customerId
           VerifiedDomin       = $verifiedDomain
           TenantActiveUsers   = $activeUsers.Count
           SipcomPlatformUsers = $activeLicensedUsersWithVoiceRoutingPolicy.Count
