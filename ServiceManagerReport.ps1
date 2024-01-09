@@ -65,33 +65,10 @@ function Get-ZoneFromPhoneNumbers {
       $sipcomPolicies = [System.Collections.Generic.List[PSCustomObject]]::new()
       $customerId = ""
       foreach ($voiceRoute in $voiceRoutes) {
+          if ($voiceRoute.OnlinePstnGatewayList -like "*halo.sipcom.cloud") {
           [string]$customerId = $voiceRoute.OnlinePstnGatewayList
-          if ($customerId -match "7aa"){
-          $customerId = $customerId.Substring($customerId.IndexOf("7aa"),6)
-          }
-          if ($customerId -match "7dd"){
-          $customerId = $customerId.Substring($customerId.IndexOf("7dd"),6)
-          }
-          if ($customerId -match "7dh"){
-          $customerId = $customerId.Substring($customerId.IndexOf("7dh"),6)
-          }
-          if ($customerId -match "7dg"){
-          $customerId = $customerId.Substring($customerId.IndexOf("7dg"),6)
-          }
-          if ($customerId -match "7di"){
-          $customerId = $customerId.Substring($customerId.IndexOf("7di"),6)
-          }
-          if ($customerId -match "7dk"){
-          $customerId = $customerId.Substring($customerId.IndexOf("7dk"),6)
-          }
-          if ($customerId -match "7df"){
-          $customerId = $customerId.Substring($customerId.IndexOf("7df"),6)
-          }
-          if ($customerId -match "7dj"){
-          $customerId = $customerId.Substring($customerId.IndexOf("7dj"),6)
-          }
-        if ($voiceRoute.OnlinePstnGatewayList -like "*halo.sipcom.cloud") {
           $pstnUsages.Add($voiceRoute.OnlinePstnUsages)
+          $customerId = $customerId.Substring(3,6)
         }
       }
   
