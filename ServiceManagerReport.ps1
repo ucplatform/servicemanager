@@ -57,7 +57,7 @@ function Get-ZoneFromPhoneNumbers {
       $output = [System.Collections.Generic.List[PSCustomObject]]::new()
   
       $verifiedDomain = (Get-CsTenant | Select-Object -ExpandProperty VerifiedDomains | Where-Object { ($_.Name -like "*.onmicrosoft.com") -and ($_.Name -notlike "*.mail.onmicrosoft.com") }).Name
-      $activeUsers = Get-CsOnlineUser | Where-Object { $_.AccountEnabled -eq $true }
+      $activeUsers = Get-CsOnlineUser | Where-Object { $_.AccountEnabled -eq $true } | Select-Object AccountEnabled
       $activeLicensedUsersWithVoiceRoutingPolicy = [System.Collections.Generic.List[PSCustomObject]]::new()
       $callQueueData = Get-CsCallQueue
       $voiceRoutes = Get-CsOnlineVoiceRoute
@@ -89,7 +89,7 @@ function Get-ZoneFromPhoneNumbers {
   
     process {
       foreach ($policy in $sipcomPolicies) {
-        Get-CsOnlineUser | Where-Object { ($_.AccountEnabled -eq $true) -and ($_.EnterpriseVoiceEnabled -eq $true) -and ($_.OnlineVoiceRoutingPolicy -like $policy) } | ForEach-Object {
+        Get-CsOnlineUser | Where-Object { ($_.AccountEnabled -eq $true) -and ($_.EnterpriseVoiceEnabled -eq $true) -and ($_.OnlineVoiceRoutingPolicy -like $policy) } | Select-Object LineUri | ForEach-Object {
           $activeLicensedUsersWithVoiceRoutingPolicy.Add($_)
         }
       }
