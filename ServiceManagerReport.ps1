@@ -71,6 +71,15 @@ function Get-ZoneFromPhoneNumbers {
           $customerId = $customerId.Substring(3,6)
         }
       }
+
+      $GlobalVRP = "0"
+      $voiceRoutingPolicyGlobal = Get-CsOnlineVoiceRoutingPolicy -Identity "Global"
+      $pstnUsages | ForEach-Object {
+          if ($voiceRoutingPolicy.OnlinePstnUsages -contains $_) {
+          $GlobalVRP = "1"
+          }
+          }
+
   
       $voiceRoutingPolicy = Get-CsOnlineVoiceRoutingPolicy | Select-Object Identity, OnlinePstnUsages
   
@@ -110,9 +119,10 @@ function Get-ZoneFromPhoneNumbers {
       $output.Add([PSCustomObject]@{
           CustomerID          = $customerId
           VerifiedDomin       = $verifiedDomain
-          TenantActiveUsers   = $activeUsers.Count
-          SipcomPlatformUsers = $activeLicensedUsersWithVoiceRoutingPolicy.Count
+          TenantEnabledUsers  = $activeUsers.Count
+          HALOPlatformUsers   = $activeLicensedUsersWithVoiceRoutingPolicy.Count
           TenantCallQueues    = $callQueueData.Length
+          GlobalVRP           = $GlobalVRP
           ZoneOne             = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 1 }).Count
           ZoneTwo             = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 2 }).Count
           ZoneThree           = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 3 }).Count
@@ -215,3 +225,10 @@ import-module Az.Storage
   $tenantData = Get-TenantData -Countries $countryData
   
   Invoke-UploadTenantDataToBlobStorage -TenantData $tenantData -AccountName "saservicemanagerdata" -ContainerName "customerdata" -SasToken $sas
+  
+  Write-Output " "
+  Write-Output " "
+  Write-Output "###################################"
+  Write-Output "###################################"
+  Write-Output " "
+  Write-Output "Script Complete"
