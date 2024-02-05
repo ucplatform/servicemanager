@@ -75,7 +75,7 @@ function Get-ZoneFromPhoneNumbers {
       $GlobalVRP = "0"
       $voiceRoutingPolicyGlobal = Get-CsOnlineVoiceRoutingPolicy -Identity "Global"
       $pstnUsages | ForEach-Object {
-          if ($voiceRoutingPolicy.OnlinePstnUsages -contains $_) {
+          if ($voiceRoutingPolicyGlobal.OnlinePstnUsages -contains $_) {
           $GlobalVRP = "1"
           }
           }
