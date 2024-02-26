@@ -72,11 +72,15 @@ function Get-ZoneFromPhoneNumbers {
         }
       }
 
+      $GlobalPSTN = ""
       $GlobalVRP = "0"
       $voiceRoutingPolicyGlobal = Get-CsOnlineVoiceRoutingPolicy -Identity "Global"
       $pstnUsages | ForEach-Object {
           if ($voiceRoutingPolicyGlobal.OnlinePstnUsages -contains $_) {
           $GlobalVRP = "1"
+            foreach ($a in $voiceRoutingPolicyGlobal.OnlinePstnUsages){
+                    $GlobalPSTN = $GlobalPSTN + $a + ", "
+            }
           }
           }
 
