@@ -128,6 +128,7 @@ function Get-ZoneFromPhoneNumbers {
           HALOPlatformUsers   = $activeLicensedUsersWithVoiceRoutingPolicy.Count
           TenantCallQueues    = $callQueueData.Length
           GlobalVRP           = $GlobalVRP
+          GlobalPSTN          = $GlobalPSTN
           ZoneOne             = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 1 }).Count
           ZoneTwo             = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 2 }).Count
           ZoneThree           = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 3 }).Count
