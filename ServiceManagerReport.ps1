@@ -92,8 +92,9 @@ function Get-ZoneFromPhoneNumbers {
       }
   
       $sipcomPolicies = $sipcomPolicies | Select-Object -Unique
-  
-      $sipcomPolicies = $sipcomPolicies.substring(4)
+      $sipcomPolicies =  $sipcompolicies -replace "Global",""
+      $sipcomPolicies =  $sipcompolicies -replace "Tag:",""
+      
     }
   
     process {
