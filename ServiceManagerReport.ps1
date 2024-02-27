@@ -59,7 +59,6 @@ function Get-ZoneFromPhoneNumbers {
       $verifiedDomain = (Get-CsTenant | Select-Object -ExpandProperty VerifiedDomains | Where-Object { ($_.Name -like "*.onmicrosoft.com") -and ($_.Name -notlike "*.mail.onmicrosoft.com") }).Name
       $activeUsers = Get-CsOnlineUser | Where-Object { $_.AccountEnabled -eq $true } | Select-Object AccountEnabled
       $activeLicensedUsersWithVoiceRoutingPolicy = [System.Collections.Generic.List[PSCustomObject]]::new()
-      $callQueueData = Get-CsCallQueue
       $voiceRoutes = Get-CsOnlineVoiceRoute
       $pstnUsages = [System.Collections.Generic.List[PSCustomObject]]::new()
       $sipcomPolicies = [System.Collections.Generic.List[PSCustomObject]]::new()
@@ -103,7 +102,7 @@ function Get-ZoneFromPhoneNumbers {
   
     process {
       foreach ($policy in $sipcomPolicies) {
-        Get-CsOnlineUser | Where-Object { ($_.AccountEnabled -eq $true) -and ($_.EnterpriseVoiceEnabled -eq $true) -and ($_.OnlineVoiceRoutingPolicy -like $policy) } | Select-Object LineUri | ForEach-Object {
+        Get-CsOnlineUser | Where-Object {($_.EnterpriseVoiceEnabled -eq $true) -and ($_.OnlineVoiceRoutingPolicy -like $policy) } | Select-Object LineUri,identity,DisplayName | ForEach-Object {
           $activeLicensedUsersWithVoiceRoutingPolicy.Add($_)
         }
       }
@@ -118,15 +117,42 @@ function Get-ZoneFromPhoneNumbers {
   
         $user | Add-Member NoteProperty -Name TeamZone -Value $teamZone
       }
+      
+        #Get Call Queue and AutoAttendants
+    $CQ = Get-CsCallQueue | select identity, Name
+    $AA = Get-CsAutoAttendant  | select identity, Name
+  
+    #Count Call Queues on HALO
+    $CallQueueData = 0
+
+    foreach ($i in $CQ){
+        if ($activeLicensedUsersWithVoiceRoutingPolicy.DisplayName -match $i.Name){
+        $CallQueueData++
+        }
     }
+
+ #Count AutoAttendants on HALO
+    $AutoAttendantData = 0
+
+    foreach ($i in $AA){
+        if ($activeLicensedUsersWithVoiceRoutingPolicy.DisplayName -match $i.Name){
+        $AutoAttendantData++
+        }
+    }
+    $TotalHALOUsers = $activeLicensedUsersWithVoiceRoutingPolicy.Count-$AutoAttendantData-$CallQueueData
+    }
+
+    
   
     end {
       $output.Add([PSCustomObject]@{
           CustomerID          = $customerId
           VerifiedDomin       = $verifiedDomain
           TenantEnabledUsers  = $activeUsers.Count
-          HALOPlatformUsers   = $activeLicensedUsersWithVoiceRoutingPolicy.Count
-          TenantCallQueues    = $callQueueData.Length
+          HALODREndpoints     = $activeLicensedUsersWithVoiceRoutingPolicy.Count
+          HALODRCallQueues    = $CallQueueData
+          HALODRAutoAttendants= $AutoAttendantData
+          HALODRUsers         = $TotalHALOUsers
           GlobalVRP           = $GlobalVRP
           GlobalPSTN          = $GlobalPSTN
           ZoneOne             = @($activeLicensedUsersWithVoiceRoutingPolicy | Where-Object { $_.TeamZone -eq 1 }).Count
