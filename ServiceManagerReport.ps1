@@ -257,7 +257,10 @@ import-module Az.Storage
   $tenantData = Get-TenantData -Countries $countryData
   
   Invoke-UploadTenantDataToBlobStorage -TenantData $tenantData -AccountName "saservicemanagerdata" -ContainerName "customerdata" -SasToken $sas
-  
+
+  Write-Output "Tenant Results:"
+  Write-Output " "
+  Write-Output $tenantData
   Write-Output " "
   Write-Output " "
   Write-Output "###################################"
