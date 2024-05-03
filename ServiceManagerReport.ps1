@@ -59,6 +59,8 @@ function Get-ZoneFromPhoneNumbers {
       $verifiedDomain = (Get-CsTenant | Select-Object -ExpandProperty VerifiedDomains | Where-Object { ($_.Name -like "*.onmicrosoft.com") -and ($_.Name -notlike "*.mail.onmicrosoft.com") }).Name
       $activeUsers = Get-CsOnlineUser | Where-Object { $_.AccountEnabled -eq $true } | Select-Object AccountEnabled
       $activeLicensedUsersWithVoiceRoutingPolicy = [System.Collections.Generic.List[PSCustomObject]]::new()
+      $Groups = @()
+      $Members = @()
       $voiceRoutes = Get-CsOnlineVoiceRoute
       $pstnUsages = [System.Collections.Generic.List[PSCustomObject]]::new()
       $sipcomPolicies = [System.Collections.Generic.List[PSCustomObject]]::new()
@@ -106,7 +108,21 @@ function Get-ZoneFromPhoneNumbers {
           $activeLicensedUsersWithVoiceRoutingPolicy.Add($_)
         }
       }
+
+      foreach ($policy in $sipcomPolicies){
+        $Groups += Get-CsGroupPolicyAssignment | where PolicyName -eq $policy | Select GroupId
+      }
   
+      foreach ($group in $Groups){
+        $Members += Get-AzureADGroupMember -ObjectId $group.GroupId | Select UserPrincipalName
+      }
+
+      foreach ($member in $Members) {
+        Get-CsOnlineUser -Identity $member.UserPrincipalName | Select-Object LineUri,identity,DisplayName | ForEach-Object {
+          $activeLicensedUsersWithVoiceRoutingPolicy.Add($_)
+        }
+      }
+
       foreach ($user in $activeLicensedUsersWithVoiceRoutingPolicy) {
         if ([string]::IsNullOrWhiteSpace($user.LineUri)) {
           continue
@@ -236,9 +252,12 @@ function Get-ZoneFromPhoneNumbers {
 
 #Import Required Module
 import-module Az.Storage
+import-module AzureAD
+import-module MicrosoftTeams
 
  #Start execution 
   Connect-MicrosoftTeams
+  Connect-AzureAD
 
   $token = Read-Host "Please Enter The SAS Token"
   $sas = "?sv=2022-11-02&ss=bf&srt=co&sp=rwdlaciytfx&se=2025-05-01T00:23:50Z&st=2023-11-28T17:23:50Z&spr=https&sig=" + $token
@@ -260,10 +279,15 @@ import-module Az.Storage
 
   Write-Output "Tenant Results:"
   Write-Output " "
-  Write-Output $tenantData
+  foreach ($i in $tenantData){
+  Write-Output $i
+  }
   Write-Output " "
   Write-Output " "
   Write-Output "###################################"
   Write-Output "###################################"
   Write-Output " "
   Write-Output "Script Complete"
+
+  Disconnect-AzAccount
+  Disconnect-MicrosoftTeams
