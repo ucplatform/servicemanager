@@ -114,7 +114,7 @@ function Get-ZoneFromPhoneNumbers {
       }
   
       foreach ($group in $Groups){
-        $Members += Get-AzureADGroupMember -ObjectId $group.GroupId | Select UserPrincipalName
+        $Members += Get-AzureADGroupMember -ObjectId $group.GroupId -All $true | Select UserPrincipalName
       }
 
       foreach ($member in $Members) {
