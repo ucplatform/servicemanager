@@ -80,7 +80,7 @@ function Get-ZoneFromPhoneNumbers {
           if ($voiceRoutingPolicyGlobal.OnlinePstnUsages -contains $_) {
           $GlobalVRP = "1"
             foreach ($a in $voiceRoutingPolicyGlobal.OnlinePstnUsages){
-                    $GlobalPSTN = $GlobalPSTN + $a + ", "
+                    $GlobalPSTN = $GlobalPSTN + $a + " "
             }
           }
           }
