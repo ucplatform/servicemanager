@@ -251,26 +251,24 @@ function Get-ZoneFromPhoneNumbers {
   }
 
 #Import Required Module
-import-module Az.Storage
-import-module AzureAD
-import-module MicrosoftTeams
+install-module Az.Storage -Scope CurrentUser
+install-module AzureAD -Scope CurrentUser
+install-module MicrosoftTeams -Scope CurrentUser
 
  #Start execution 
   Connect-MicrosoftTeams
   Connect-AzureAD
 
   $token = Read-Host "Please Enter The SAS Token"
-  $sas = "?sp=racwl&st=2025-11-04T09:01:40Z&se=2027-11-01T17:16:40Z&spr=https&sv=2024-11-04&sr=c&sig=" + $token
+  $sas = "?sv=2024-11-04&ss=bf&srt=co&sp=rwlactf&se=2027-11-04T21:46:55Z&st=2025-11-04T13:31:55Z&spr=https&sig=" + $token
   
   #Get Storage Account context
   $context = New-AzStorageContext -StorageAccountName "saservicemanagerdata" -SasToken $sas
-  #Get reference for container
-  $container = Get-AzStorageContainer -Name "customerdata" -Context $context
-  #Get reference for file
-  $client = $container.CloudBlobContainer.GetBlockBlobReference("CountryData.json")
-  #Read file contents into memory
-  $file = $client.DownloadText()
-  
+  $blob = Get-AzStorageBlob -Container "customerdata" -Blob "CountryData.json" -Context $context
+  $content = Get-AzStorageBlobContent -Blob $blob.Name -Container "customerdata" -Context $context -Destination "CountryData.json" -Force
+  # Then read the file content if needed:
+  $file = Get-Content -Path "CountryData.json" -Raw
+ 
   $countryData = $file | ConvertFrom-Json
   
   $tenantData = Get-TenantData -Countries $countryData
@@ -291,4 +289,6 @@ import-module MicrosoftTeams
 
   Disconnect-AzAccount
   Disconnect-MicrosoftTeams
+
+
 
