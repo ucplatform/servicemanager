@@ -260,7 +260,7 @@ import-module MicrosoftTeams
   Connect-AzureAD
 
   $token = Read-Host "Please Enter The SAS Token"
-  $sas = "?sp=racw&st=2025-06-02T14:58:53Z&se=2027-09-01T22:58:53Z&spr=https&sv=2024-11-04&sr=c&sig=" + $token
+  $sas = "?sp=racwl&st=2025-11-04T09:01:40Z&se=2027-11-01T17:16:40Z&spr=https&sv=2024-11-04&sr=c&sig=" + $token
   
   #Get Storage Account context
   $context = New-AzStorageContext -StorageAccountName "saservicemanagerdata" -SasToken $sas
@@ -291,3 +291,4 @@ import-module MicrosoftTeams
 
   Disconnect-AzAccount
   Disconnect-MicrosoftTeams
+
